@@ -1,5 +1,5 @@
 const signupSchema = require("../model/signupSchema")
-
+const crypto=require("crypto")
 
 async function otpController(req, res) {
     const {email, otp}= req.body
@@ -31,4 +31,26 @@ async function otpController(req, res) {
 
 }
 
-module.exports= otpController
+
+async function resendOtpColtroller(req, res) {
+    const {email} = req.body;
+    const resentOtp = await signupSchema.findOne({email});
+    if(!resentOtp){
+        return res.json({message: "email is not found"})
+    }
+
+   const otp = crypto.randomInt(100000, 999999).toString();
+
+    const expireotp = new Date(Date.now() + 1 * 60 * 1000)
+
+    resentOtp.otp=otp
+    resentOtp.expireotp = expireotp
+
+    resentOtp.save()
+    res.json({
+        message: "otp success"
+    })
+
+}
+
+module.exports= {otpController, resendOtpColtroller}
