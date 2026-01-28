@@ -11,7 +11,7 @@ async function otpController(req, res) {
         })
     }
 
-    if(user.verification){
+    if(user.isVerified){
         return res.json({"message": "email is Verified"})
     }
 
@@ -19,12 +19,12 @@ async function otpController(req, res) {
         return res.status(400).json({ messes: "invalied otp" })
     }
 
-    user.verification= true
+    user.isVerified= true
     user.otp = undefined
     user.expireotp = undefined
 
     await user.save()
-    res.status(400).json({
+    res.status(200).json({
         message: "Email Verification Done"
     })
 

@@ -3,7 +3,7 @@ const signupSchema = require("../model/signupSchema");
 const bcrypt = require('bcrypt');
 
 
-async function loginController(req, res) {
+async function loginFn(req, res) {
     const {email, password} = req.body;
 
     if(!email){
@@ -28,6 +28,16 @@ async function loginController(req, res) {
         return res.json({message: "password bul"})
     }
 
+    // section Schema 
+    req.session.isAuth=true
+    res.session.signupSchema({
+        id:loginUser._id,
+        email:loginUser.email,
+        firstName:loginUser.firstName,
+    })
+
+    // section Schema 
+
     await loginUser.save()
     res.json({
         message: "login success"
@@ -35,4 +45,20 @@ async function loginController(req, res) {
 
 }
 
-module.exports = loginController
+function logoutController(req, res) {
+    req.session.destroy(function(err) {
+  if(err){
+    return res.status(400).json({message:"samthing is woring"})
+  }
+  res.status(200).json({
+    success:true,
+    message:"Log out successful"
+  })
+})
+}
+
+async function dashboardController(req, res) {
+    return res.json({message:"well Come to Dashboard"})
+}
+
+module.exports = {loginFn, dashboardController, logoutController}

@@ -7,7 +7,7 @@ async function emailVerification(email, otp) {
   secure: false, 
   auth: {
     user: "titu17940@gmail.com",
-    pass: "woimfqabkcqtepdl",
+    pass: process.env.APP_PASSWORD
   },
 });
 

@@ -26,6 +26,10 @@ const signupUser = new Schema({
     expireotp:{
         type: Date,
     },
+    isVerified:{
+        type: Boolean,
+        default:false
+    },
 })
 
 module.exports = mongoose.model('userList', signupUser)
