@@ -1,6 +1,7 @@
 const emailValidation = require("../helpers/emailValidation");
 const signupSchema = require("../model/signupSchema");
 const bcrypt = require('bcrypt');
+const session = require('express-session')
 
 
 async function loginFn(req, res) {
@@ -26,20 +27,21 @@ async function loginFn(req, res) {
 
     if(!hashPassword){
         return res.json({message: "password bul"})
+
     }
 
     // section Schema 
     req.session.isAuth=true
-    res.session.signupSchema({
+    res.session.signupSchema={
         id:loginUser._id,
         email:loginUser.email,
         firstName:loginUser.firstName,
-    })
+    }
 
     // section Schema 
 
     await loginUser.save()
-    res.json({
+    res.status(200).json({
         message: "login success"
     })
 

@@ -6,20 +6,19 @@ async function emailVerification(email, otp) {
   port: 587,
   secure: false, 
   auth: {
-    user: "titu17940@gmail.com",
+    user: process.env.EMAIL,
     pass: process.env.APP_PASSWORD
   },
 });
 
 const info = await transporter.sendMail({
-    from: '"mern" <titu17940@gmail.com>',
+    from: `"mern" <${process.env.EMAIL}>`,
     to: email,
     subject: "Otp",
     text: "OTP Verification", 
     html: `<h1>your otp code ${otp}</h1>`, 
   });
 
-  console.log("Message sent:", info.messageId);
 }
 
 module.exports = emailVerification
